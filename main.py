@@ -245,7 +245,7 @@ fig.add_scattergeo(
     lat=top3["lat"],
     mode="markers+text",
     text=top3["순위"],
-    textposition="small center",
+    textposition="middle right",
 
     marker=dict(
         size=26,
