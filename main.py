@@ -216,6 +216,32 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 # ----------------------------------------------------------
+# 고령화율 TOP 3 표시
+# ----------------------------------------------------------
+
+st.markdown("### 🏆 전국 고령화율 TOP 3")
+
+top3 = (
+    gdf[["시도", "시군구", "고령화율"]]
+    .sort_values("고령화율", ascending=False)
+    .head(3)
+    .reset_index(drop=True)
+)
+
+col1, col2, col3 = st.columns(3)
+
+medals = ["🥇", "🥈", "🥉"]
+
+for i, col in enumerate([col1, col2, col3]):
+    row = top3.iloc[i]
+    with col:
+        st.metric(
+            label=f"{medals[i]} {i+1}위",
+            value=row["시군구"],
+            delta=f"{row['시도']} · {row['고령화율']:.2f}%"
+        )
+
+# ----------------------------------------------------------
 # 범례 설명
 # ----------------------------------------------------------
 st.markdown("""
