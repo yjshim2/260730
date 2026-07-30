@@ -350,20 +350,19 @@ else:
     )
 
 
-fig_pie = px.pie(
-    top5,
-    values="관객수",
-    names="영화명",
-    hole=0.45,
-    color_discrete_sequence=[
-        "#A8DADC",
-        "#FFD6A5",
-        "#BDE0FE",
-        "#CDB4DB",
-        "#FFC8DD"
-    ]
-)
-
+    ani_pie = px.pie(
+        animation_df.head(5),
+        values="관객수",
+        names="영화명",
+        hole=0.45,
+        color_discrete_sequence=[
+            "#FFB5E8",
+            "#B5EAD7",
+            "#C7CEEA",
+            "#FFDAC1",
+            "#E2F0CB"
+        ]
+    )
 
     ani_pie.update_traces(
         textinfo="percent+label"
