@@ -225,7 +225,14 @@ fig_pie = px.pie(
     top5,
     values="관객수",
     names="영화명",
-    hole=0.45
+    hole=0.45,
+    color_discrete_sequence=[
+        "#A8DADC",
+        "#FFD6A5",
+        "#BDE0FE",
+        "#CDB4DB",
+        "#FFC8DD"
+    ]
 )
 
 
@@ -254,7 +261,7 @@ st.markdown("---")
 
 
 st.header(
-    "🎨 애니메이션 영화 분석"
+    "🎥 2026년 7월 애니메이션 영화 분석"
 )
 
 
@@ -343,12 +350,19 @@ else:
     )
 
 
-    ani_pie = px.pie(
-        animation_df.head(5),
-        values="관객수",
-        names="영화명",
-        hole=0.45
-    )
+fig_pie = px.pie(
+    top5,
+    values="관객수",
+    names="영화명",
+    hole=0.45,
+    color_discrete_sequence=[
+        "#A8DADC",
+        "#FFD6A5",
+        "#BDE0FE",
+        "#CDB4DB",
+        "#FFC8DD"
+    ]
+)
 
 
     ani_pie.update_traces(
@@ -373,13 +387,20 @@ else:
 
 
     ani_bar = px.bar(
-        animation_df.head(5),
-        x="관객수",
-        y="영화명",
-        orientation="h",
-        text="관객수"
-    )
-
+    animation_df.head(5),
+    x="관객수",
+    y="영화명",
+    orientation="h",
+    text="관객수",
+    color="영화명",
+    color_discrete_sequence=[
+        "#A0C4FF",
+        "#BDB2FF",
+        "#FFC6FF",
+        "#CAFFBF",
+        "#FDFFB6"
+    ]
+)
 
     ani_bar.update_layout(
         height=400,
