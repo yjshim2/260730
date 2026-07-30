@@ -213,7 +213,95 @@ fig.update_layout(
     paper_bgcolor="white",
 )
 
-st.plotly_chart(fig, use_container_width=True)
+
+# ----------------------------------------------------------
+# 고령화율 TOP3 표시
+# 빨간 핀 + 흰색 번호 + 지역명
+# ----------------------------------------------------------
+
+# 시군구 내부에 들어가는 대표 위치 계산
+gdf["point"] = gdf.geometry.representative_point()
+
+gdf["lon"] = gdf["point"].x
+gdf["lat"] = gdf["point"].y
+
+
+# 고령화율 높은 3곳 선택
+top3 = (
+    gdf.sort_values(
+        "고령화율",
+        ascending=False
+    )
+    .head(3)
+    .copy()
+)
+
+top3["순위"] = ["①", "②", "③"]
+
+
+# 빨간 원 핀 + 흰색 번호
+fig.add_scattergeo(
+    lon=top3["lon"],
+    lat=top3["lat"],
+    mode="markers+text",
+    text=top3["순위"],
+    textposition="middle center",
+
+    marker=dict(
+        size=26,
+        color="red",
+        line=dict(
+            color="white",
+            width=2
+        )
+    ),
+
+    textfont=dict(
+        size=15,
+        color="white"
+    ),
+
+    hoverinfo="skip",
+    showlegend=False
+)
+
+
+# 지역명 표시
+fig.add_scattergeo(
+    lon=top3["lon"],
+    lat=top3["lat"],
+
+    mode="text",
+
+    text=top3["시군구"],
+
+    textposition="bottom center",
+
+    textfont=dict(
+        size=13,
+        color="black"
+    ),
+
+    hovertext=(
+        top3["시도"]
+        + "<br>"
+        + top3["시군구"]
+        + "<br>고령화율: "
+        + top3["고령화율"].round(1).astype(str)
+        + "%"
+    ),
+
+    hoverinfo="text",
+
+    showlegend=False
+)
+
+
+# 지도 출력
+st.plotly_chart(
+    fig,
+    use_container_width=True
+)
 
 # ----------------------------------------------------------
 # 지도에 TOP3 표시 (빨간 핀 + 흰색 번호 + 지역명)
