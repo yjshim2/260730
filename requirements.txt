@@ -3,3 +3,6 @@ requests
 
 geopandas
 branca
+
+requests
+plotly
