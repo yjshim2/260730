@@ -215,6 +215,66 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
+# ----------------------------------------------------------
+# 지도에 TOP3 표시 (빨간 핀 + 흰색 번호 + 지역명)
+# ----------------------------------------------------------
+
+# 중심점 계산
+gdf["point"] = gdf.geometry.representative_point()
+gdf["lon"] = gdf.point.x
+gdf["lat"] = gdf.point.y
+
+top3 = (
+    gdf.sort_values("고령화율", ascending=False)
+       .head(3)
+       .copy()
+)
+
+top3["순위"] = ["①", "②", "③"]
+
+# 빨간 핀
+fig.add_scattergeo(
+    lon=top3["lon"],
+    lat=top3["lat"],
+    mode="markers+text",
+    text=top3["순위"],
+    textposition="middle center",
+    textfont=dict(
+        size=14,
+        color="white",
+        family="Malgun Gothic"
+    ),
+    marker=dict(
+        size=22,
+        color="red",
+        line=dict(color="white", width=2),
+        symbol="circle"
+    ),
+    hoverinfo="skip",
+    showlegend=False
+)
+
+# 지역명
+fig.add_scattergeo(
+    lon=top3["lon"],
+    lat=top3["lat"],
+    mode="text",
+    text=top3["시군구"],
+    textposition="bottom center",
+    textfont=dict(
+        size=12,
+        color="black",
+        family="Malgun Gothic"
+    ),
+    hoverinfo="text",
+    hovertext=(
+        top3["시도"] + "<br>" +
+        top3["시군구"] + "<br>" +
+        top3["고령화율"].round(1).astype(str) + "%"
+    ),
+    showlegend=False
+)
+
 
 # ----------------------------------------------------------
 # 범례 설명
